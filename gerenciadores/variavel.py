@@ -2,11 +2,24 @@ from estruturas.bloco_variavel import BlocoVariavel
 
 class GerenciadorVariavel:
     def __init__(self, tamanho_total, politica):
+        tamanho_original = tamanho_total
+        tamanho_total = self._next_power_of_two(int(tamanho_total))
+        if tamanho_total != tamanho_original:
+            print(f"Tamanho total ajustado de {tamanho_original} para {tamanho_total} (potência de 2)")
         self.tamanho_total = tamanho_total
         self.politica = politica 
         self.cabeca = BlocoVariavel(0, tamanho_total)
         self.ultimo_alocado = self.cabeca
         self.tabela_alocacao = {}
+
+    @staticmethod
+    def _next_power_of_two(n: int) -> int:
+        if n <= 1:
+            return 1
+        power = 1
+        while power < n:
+            power <<= 1
+        return power
 
     def alocar(self, processo_id, tamanho_requisitado):
         bloco_escolhido = None
